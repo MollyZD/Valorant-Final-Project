@@ -1,3 +1,5 @@
+# Framework by Prakhar Rathi
+# Imports
 import streamlit as st
 
 class MultiPage:

@@ -1,3 +1,5 @@
+# Framework by Prakhar Rathi
+# Imports
 import streamlit as st
 import numpy as np
 from PIL import Image
@@ -15,13 +17,14 @@ col1, col2 = st.columns(2)
 col1.image(display, width = 400)
 col2.title("Valorant Data Application")
 
-# Add all your application here
+# Applications
 app.add_page("Introduction", introduction.app)
 app.add_page("Team", team.app)
 app.add_page("Player", player.app)
 app.add_page("Agent", agent.app)
 app.add_page("Map", map.app)
 
+# Hide unfunctional sidebar - Taken from Google
 no_sidebar_style = """
     <style>
         div[data-testid="stSidebarNav"] {display: none;}
