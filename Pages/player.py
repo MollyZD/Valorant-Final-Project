@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from Pages import data # Allow access to dataframe
+from Pages import data # Allow access to dataframe and base class
 
 def app():
 
@@ -22,36 +22,27 @@ def app():
         placeholder = "Select Year"
     )
 
-    class Player():
+    class Player(data.Entity):
 
         # Constructor
-        def __init__(self, player, year):
-            self.player = player
-            self.year = year
-
-        # Display name of player selected
-        def display_name(self):
-            st.header(self.player)
-        
-        # Display year selected
-        def display_year(self):
-            st.header(self.year)
+        def __init__(self, entity, year):
+            data.Entity.__init__(self, entity, year)
         
         # Filter dataframe by player selected
         def filter_player(self):
-            player_df = data.df[data.df["player-name"] == self.player]
+            player_df = data.df[data.df["player-name"] == self.entity]
             st.dataframe(player_df)
         
         # Filter dataframe by player and year selected
         def filter_player_year(self):
             if self.year == "2021":
-                player_year_df = data.df[(data.df["player-name"] == self.player) & (data.df["match-datetime"].isin(data.y2021))]
+                player_year_df = data.df[(data.df["player-name"] == self.entity) & (data.df["match-datetime"].isin(data.y2021))]
                 st.dataframe(player_year_df)
             elif self.year == "2022":
-                player_year_df = data.df[(data.df["player-name"] == self.player) & (data.df["match-datetime"].isin(data.y2022))]
+                player_year_df = data.df[(data.df["player-name"] == self.entity) & (data.df["match-datetime"].isin(data.y2022))]
                 st.dataframe(player_year_df)
             elif self.year == "2023":
-                player_year_df = data.df[(data.df["player-name"] == self.player) & (data.df["match-datetime"].isin(data.y2023))]
+                player_year_df = data.df[(data.df["player-name"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
                 st.dataframe(player_year_df)
     
     # Run if a player is selected

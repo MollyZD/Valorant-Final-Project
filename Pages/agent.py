@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from Pages import data # Allow access to dataframe
+from Pages import data # Allow access to dataframe and base class
 
 def app():
 
@@ -23,40 +23,31 @@ def app():
         placeholder = "Select Year"
     )
 
-    class Agent():
+    class Agent(data.Entity):
 
         # Constructor
-        def __init__(self, agent, year):
-            self.agent = agent
-            self.year = year
-        
-        # Display name of agent selected
-        def display_name(self):
-            st.header(self.agent)
-        
-        # Display year selected
-        def display_year(self):
-            st.header(self.year)
+        def __init__(self, entity, year):
+            data.Entity.__init__(self, entity, year)
         
         # Display image of agent selected
         def show_image(self):
-            st.image(f"{self.agent}.png")
+            st.image(f"{self.entity}.png")
         
         # Filter dataframe by agent selected
         def filter_agent(self):
-            agent_df = data.df[data.df["agent"] == self.agent]
+            agent_df = data.df[data.df["agent"] == self.entity]
             st.dataframe(agent_df)
         
         # Filter dataframe by agent and year selected
         def filter_agent_year(self):
             if self.year == "2021":
-                agent_year_df = data.df[(data.df["agent"] == self.agent) & (data.df["match-datetime"].isin(data.y2021))]
+                agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2021))]
                 st.dataframe(agent_year_df)
             elif self.year == "2022":
-                agent_year_df = data.df[(data.df["agent"] == self.agent) & (data.df["match-datetime"].isin(data.y2022))]
+                agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2022))]
                 st.dataframe(agent_year_df)
             elif self.year == "2023":
-                agent_year_df = data.df[(data.df["agent"] == self.agent) & (data.df["match-datetime"].isin(data.y2023))]
+                agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
                 st.dataframe(agent_year_df)
 
     # Run if an agent has been selected

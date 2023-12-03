@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from Pages import data # Allow access to dataframe
+from Pages import data # Allow access to dataframe and base class
 
 def app():
 
@@ -23,40 +23,31 @@ def app():
         placeholder = "Select Year"
     )
 
-    class Map():
+    class Map(data.Entity):
 
         # Constructor
-        def __init__(self, map, year):
-            self.map = map
-            self.year = year
-        
-        # Display name of map selected
-        def display_name(self):
-            st.header(self.map)
-        
-        # Display year selected
-        def display_year(self):
-            st.header(self.year)
+        def __init__(self, entity, year):
+            data.Entity.__init__(self, entity, year)
         
         # Display image of map selected
         def show_image(self):
-            st.image(f"{self.map}.png")
+            st.image(f"{self.entity}.png")
         
         # Filter dataframe by map selected
         def filter_map(self):
-            map_df = data.df[data.df["map"] == self.map]
+            map_df = data.df[data.df["map"] == self.entity]
             st.dataframe(map_df)
         
         # Filter dataframe by map and year selected
         def filter_map_year(self):
             if self.year == "2021":
-                map_year_df = data.df[(data.df["map"] == self.map) & (data.df["match-datetime"].isin(data.y2021))]
+                map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2021))]
                 st.dataframe(map_year_df)
             elif self.year == "2022":
-                map_year_df = data.df[(data.df["map"] == self.map) & (data.df["match-datetime"].isin(data.y2022))]
+                map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2022))]
                 st.dataframe(map_year_df)
             elif self.year == "2023":
-                map_year_df = data.df[(data.df["map"] == self.map) & (data.df["match-datetime"].isin(data.y2023))]
+                map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
                 st.dataframe(map_year_df)
 
     
