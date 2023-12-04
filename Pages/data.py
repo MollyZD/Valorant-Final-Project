@@ -1,8 +1,6 @@
 # Imports
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 
 # Read in dataframe from CSV file
 df = pd.read_csv("valorant_data.csv", encoding='latin-1', dtype='unicode')

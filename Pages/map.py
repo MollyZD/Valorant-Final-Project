@@ -49,6 +49,33 @@ def app():
             elif self.year == "2023":
                 map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
                 st.dataframe(map_year_df)
+        
+        # Plot statistic
+        def plot_stat(self, stat, type):
+            st.header(stat)
+            if self.year == "2021":
+                map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2021))]
+                map_year_df.dropna()
+            elif self.year == "2022":
+                map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2022))]
+                map_year_df.dropna()
+            elif self.year == "2023":
+                map_year_df = data.df[(data.df["map"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
+                map_year_df.dropna()
+
+            map_year_df["match-datetime"] = pd.to_datetime(map_year_df["match-datetime"])
+            map_year_df.sort_values(by = stat, ascending = True, inplace = True)
+            date = map_year_df["match-datetime"]
+            value = map_year_df[stat]
+            value = value.astype(float)
+
+            fig, ax = plt.subplots(1, figsize = (20, 8))
+            if type == "bar":
+                ax.bar(date, value)
+            elif type == "scatter":
+                ax.scatter(date, value)
+            fig.autofmt_xdate()
+            st.pyplot(plt)
 
     
     # Run if a map has been selected
@@ -63,3 +90,9 @@ def app():
         if year:
             map_name.display_year()
             map_name.filter_map_year()
+            map_name.plot_stat("kills-attack","scatter")
+            map_name.plot_stat("kills-defend","scatter")
+            map_name.plot_stat("deaths-attack","scatter")
+            map_name.plot_stat("deaths-defend","scatter")
+            map_name.plot_stat("assists-attack","scatter")
+            map_name.plot_stat("assists-defend","scatter")

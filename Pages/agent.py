@@ -49,6 +49,33 @@ def app():
             elif self.year == "2023":
                 agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
                 st.dataframe(agent_year_df)
+        
+        # Plot statistic
+        def plot_stat(self, stat, type):
+            st.header(stat)
+            if self.year == "2021":
+                agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2021))]
+                agent_year_df.dropna()
+            elif self.year == "2022":
+                agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2022))]
+                agent_year_df.dropna()
+            elif self.year == "2023":
+                agent_year_df = data.df[(data.df["agent"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
+                agent_year_df.dropna()
+                
+            agent_year_df["match-datetime"] = pd.to_datetime(agent_year_df["match-datetime"])
+            agent_year_df.sort_values(by = stat, ascending = True, inplace = True)
+            date = agent_year_df["match-datetime"]
+            value = agent_year_df[stat]
+            value = value.astype(float)
+
+            fig, ax = plt.subplots(1, figsize = (20, 8))
+            if type == "bar":
+                ax.bar(date, value)
+            elif type == "scatter":
+                ax.scatter(date, value)
+            fig.autofmt_xdate()
+            st.pyplot(plt)
 
     # Run if an agent has been selected
     if agent:
@@ -62,3 +89,9 @@ def app():
         if year:
             agent_name.display_year()
             agent_name.filter_agent_year()
+            agent_name.plot_stat("kills-attack","scatter")
+            agent_name.plot_stat("kills-defend","scatter")
+            agent_name.plot_stat("deaths-attack","scatter")
+            agent_name.plot_stat("deaths-defend","scatter")
+            agent_name.plot_stat("assists-attack","scatter")
+            agent_name.plot_stat("assists-defend","scatter")

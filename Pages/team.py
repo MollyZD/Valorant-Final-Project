@@ -56,6 +56,37 @@ def app():
             st.header("Lost Games")
             team_lose_df = data.df[(data.df["team1"] == self.entity) & (data.df["team1-score"] != "13") | (data.df["team2"] == self.entity) & (data.df["team2-score"] != "13")]
             st.dataframe(team_lose_df)
+
+        # Plot score based on team
+        def plot_score(self, team):
+            st.header("Score")
+            if self.year == "2021":
+                team_year_df = data.df[(data.df["team1"] == self.entity) | (data.df["team2"] == self.entity) & (data.df["match-datetime"].isin(data.y2021))]
+                team_year_df.dropna()
+            elif self.year == "2022":
+                team_year_df = data.df[(data.df["team1"] == self.entity) | (data.df["team2"] == self.entity) & (data.df["match-datetime"].isin(data.y2022))]
+                team_year_df.dropna()
+            elif self.year == "2023":
+                team_year_df = data.df[(data.df["team1"] == self.entity) | (data.df["team2"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
+                team_year_df.dropna()
+                
+            team_year_df["match-datetime"] = pd.to_datetime(team_year_df["match-datetime"])
+            if team == "team1":
+                st.header("Team 1")
+                team_year_df.sort_values(by = "team1-score", ascending = True, inplace = True)
+                value = team_year_df["team1-score"]
+                value = value.astype(int)
+            elif team == "team2":
+                st.header("Team 2")
+                team_year_df.sort_values(by = "team2-score", ascending = True, inplace = True)
+                value = team_year_df["team2-score"]
+                value = value.astype(int)
+            date = team_year_df["match-datetime"]
+
+            fig, ax = plt.subplots(1, figsize = (20, 8))
+            ax.bar(date, value)
+            fig.autofmt_xdate()
+            st.pyplot(plt)
     
     # Run if a team has been selected
     if team:
@@ -81,17 +112,19 @@ def app():
         if year:
             team_name.display_year()
             team_name.filter_team_year()
+            team_name.plot_score("team1")
+            team_name.plot_score("team2")
 
             # Stats Options
-            stats2 = st.selectbox(
+            stats = st.selectbox(
             'Please Choose A Statistic:',
             ("Yearly Wins","Yearly Losses"),
             index = None,
             placeholder = "Select Statistic"
         )
-            if stats2:
-                if stats2 == "Yearly Wins":
+            if stats:
+                if stats == "Yearly Wins":
                     team_name.filter_win()
-                elif stats2 == "Yearly Losses":
+                elif stats == "Yearly Losses":
                     team_name.filter_loss()
  
