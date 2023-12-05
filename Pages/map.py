@@ -23,6 +23,7 @@ def app():
         placeholder = "Select Year"
     )
 
+    # Derived class from Entity
     class Map(data.Entity):
 
         # Constructor

@@ -1,7 +1,5 @@
 # Imports
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
 from Pages import data # Allow access to dataframe
 
 def app():

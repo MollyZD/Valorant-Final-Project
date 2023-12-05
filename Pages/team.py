@@ -22,6 +22,7 @@ def app():
         placeholder = "Select Year"
     )
 
+    # Derived class from Entity
     class Team(data.Entity):
 
         # Constructor
@@ -69,8 +70,9 @@ def app():
             elif self.year == "2023":
                 team_year_df = data.df[(data.df["team1"] == self.entity) | (data.df["team2"] == self.entity) & (data.df["match-datetime"].isin(data.y2023))]
                 team_year_df.dropna()
-                
+
             team_year_df["match-datetime"] = pd.to_datetime(team_year_df["match-datetime"])
+            date = team_year_df["match-datetime"]
             if team == "team1":
                 st.header("Team 1")
                 team_year_df.sort_values(by = "team1-score", ascending = True, inplace = True)
@@ -81,7 +83,6 @@ def app():
                 team_year_df.sort_values(by = "team2-score", ascending = True, inplace = True)
                 value = team_year_df["team2-score"]
                 value = value.astype(int)
-            date = team_year_df["match-datetime"]
 
             fig, ax = plt.subplots(1, figsize = (20, 8))
             ax.bar(date, value)
@@ -95,7 +96,7 @@ def app():
         team_name.display_name()
         team_name.filter_team()
 
-        # Stats Options
+        # Stats options
         stats = st.selectbox(
         'Please Choose A Statistic:',
         ("Wins","Losses"),
@@ -115,7 +116,7 @@ def app():
             team_name.plot_score("team1")
             team_name.plot_score("team2")
 
-            # Stats Options
+            # Stats options
             stats = st.selectbox(
             'Please Choose A Statistic:',
             ("Yearly Wins","Yearly Losses"),
