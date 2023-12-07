@@ -103,6 +103,7 @@ def app():
         index = None,
         placeholder = "Select Statistic"
     )
+        # Run if a stat has been selected
         if stats:
             if stats == "Wins":
                 team_name.filter_win()
@@ -123,6 +124,7 @@ def app():
             index = None,
             placeholder = "Select Statistic"
         )
+            # Run if a stat has been selected
             if stats:
                 if stats == "Yearly Wins":
                     team_name.filter_win()
